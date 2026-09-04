@@ -19,7 +19,7 @@ void banner() {
 void usage(const char* name) {
 	std::cerr << "Usage: " << name <<
 		" [--latency] [--download] [--upload] [--share] [--help]\n"
-		"      [--test-server host:port] [--output verbose|text|json]\n"
+		"      [--test-server host:port] [--output verbose|text|json] [--duration seconds]\n"
 		"\noptional arguments:\n"
 		"  --help                      Show this message and exit\n"
 		"  --list-servers              Show list of servers\n"
@@ -30,7 +30,8 @@ void usage(const char* name) {
 		"  --insecure                  Skip SSL certificate verify (Useful for Embedded devices)\n"
 		"  --test-server host:port     Run speed test against a specific server\n"
 		"  --force-by-latency-test     Always select server based on local latency test\n"
-		"  --output verbose|text|json  Set output type. Default: verbose\n" << std::endl;
+		"  --output verbose|text|json  Set output type. Default: verbose\n"
+                "  --duration seconds          Set upload/download duration in seconds. Default: 20\n" << std::endl;
 }
 
 int main(const int argc, const char **argv) {
@@ -227,7 +228,9 @@ int main(const int argc, const char **argv) {
 
 	speedtest::Speed preSpeed;
 
-	if ( !sp.download_speed(server, speedtest::Config::preflight, preSpeed,
+        speedtest::Config preConfig = speedtest::Config::preflight;
+        preConfig.min_test_time_ms = opts.duration;
+	if ( !sp.download_speed(server, preConfig, preSpeed,
 	        [&opts](bool success, speedtest::Speed) {
 		if ( opts.output_type == OutputType::verbose )
 			std::cout << ( success ? '.' : '*' ) << std::flush;
@@ -253,7 +256,8 @@ int main(const int argc, const char **argv) {
 
 		speedtest::Speed downloadSpeed;
 
-		if ( sp.download_speed(server, profile.download, downloadSpeed,
+		profile.download.min_test_time_ms = opts.duration;
+                if ( sp.download_speed(server, profile.download, downloadSpeed,
 		        [&opts, &profile, &output_mutex](bool success, speedtest::Speed current) {
 			if ( opts.output_type == OutputType::verbose && success ) {
 				std::lock_guard lk(output_mutex);
@@ -294,6 +298,7 @@ int main(const int argc, const char **argv) {
 
 	speedtest::Speed uploadSpeed;
 
+        profile.upload.min_test_time_ms = opts.duration;
 	if ( sp.upload_speed(server, profile.upload, uploadSpeed,
 	        [&opts, &profile, &output_mutex](bool success, speedtest::Speed current) {
 		if ( opts.output_type == OutputType::verbose && success ) {

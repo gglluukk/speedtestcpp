@@ -22,6 +22,7 @@ typedef struct program_options_t {
 	bool force_ping_selected	= false;
 	std::string selected_server 	= "";
 	OutputType output_type		= OutputType::verbose;
+        long duration                   = 20000;
 } ProgramOptions;
 
 static struct option CmdLongOptions[] = {
@@ -35,10 +36,11 @@ static struct option CmdLongOptions[] = {
 	{ "force-by-latency-test",	no_argument,		0, 'f' },
 	{ "test-server",		required_argument,	0, 't' },
 	{ "output",			required_argument,	0, 'o' },
+        { "duration",                   required_argument,      0, 'D' },
 	{ 0, 0, 0, 0 }
 };
 
-const char *optStr = "hldusiqt:o:";
+const char *optStr = "hldusifqt:o:D:";
 
 bool ParseOptions(const int argc, const char **argv, ProgramOptions& options) {
 
@@ -89,6 +91,9 @@ bool ParseOptions(const int argc, const char **argv, ProgramOptions& options) {
 					return false;
 				}
 				break;
+                        case 'D':
+                                options.duration = std::stol(optarg) * 1000;
+                                break;
 			default:
 				return false;
 		}

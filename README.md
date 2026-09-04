@@ -84,13 +84,13 @@ pin a specific server.
 
 ```
 $ ./speedtest --help
-SpeedTest++ version 3.1.0
+SpeedTest++ version 3.1.1
 Speedtest.net command line interface
 Info: https://github.com/oskarirauta/speedtestcpp
 Author: Francesco Laurita <francesco.laurita@gmail.com>
 Co-authored-by: Oskari Rauta <oskari.rauta@gmail.com>
 Usage: ./speedtest [--latency] [--download] [--upload] [--share] [--help]
-      [--test-server host:port] [--output verbose|text|json]
+      [--test-server host:port] [--output verbose|text|json] [--duration seconds]
 
 optional arguments:
   --help                      Show this message and exit
