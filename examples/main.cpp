@@ -228,7 +228,7 @@ int main(const int argc, const char **argv) {
 
 	speedtest::Speed preSpeed;
 
-	if ( !sp.download_speed(server, preConfig, preSpeed,
+	if ( !sp.download_speed(server, speedtest::Config::preflight, preSpeed,
 	        [&opts](bool success, speedtest::Speed) {
 		if ( opts.output_type == OutputType::verbose )
 			std::cout << ( success ? '.' : '*' ) << std::flush;
