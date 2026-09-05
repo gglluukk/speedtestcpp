@@ -228,8 +228,6 @@ int main(const int argc, const char **argv) {
 
 	speedtest::Speed preSpeed;
 
-        speedtest::Config preConfig = speedtest::Config::preflight;
-        preConfig.min_test_time_ms = opts.duration;
 	if ( !sp.download_speed(server, preConfig, preSpeed,
 	        [&opts](bool success, speedtest::Speed) {
 		if ( opts.output_type == OutputType::verbose )

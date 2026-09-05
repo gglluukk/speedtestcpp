@@ -5,7 +5,7 @@ const speedtest::Config speedtest::Config::preflight = {
 	2000000,		// max_size
 	125000,			// inc_size
 	4096,			// buff_size
-	10000,			// min_test_time_ms
+	5000,			// min_test_time_ms
 	2			// Concurrency
 };
 
